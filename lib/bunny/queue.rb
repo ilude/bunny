@@ -162,7 +162,8 @@ module Bunny
                     :manual_ack      => false,
                     :exclusive       => false,
                     :block           => false,
-                    :on_cancellation => nil
+                    :on_cancellation => nil,
+                    :timeout         => nil
                   }, &block)
 
       unless opts[:ack].nil?
@@ -185,7 +186,7 @@ module Bunny
       if opts[:block]
         # joins current thread with the consumers pool, will block
         # the current thread for as long as the consumer pool is active
-        @channel.work_pool.join
+        @channel.work_pool.join(opts[:timeout])
       end
 
       consumer
